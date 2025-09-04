@@ -26,23 +26,25 @@ public class AsistenciaApplication extends Application {
 
 	@Override
 	public void init() throws Exception {
-		//configurableApplicationContext=SpringApplication.run(SysPooApplication.class);
+		//configurableApplicationContext= SpringApplication.run(SysPooApplication.class);
 
 		SpringApplicationBuilder builder = new SpringApplicationBuilder(AsistenciaApplication.class);
 		builder.application().setWebApplicationType(WebApplicationType.NONE);
 		configurableApplicationContext = builder.run(getParameters().getRaw().toArray(new String[0]));
 
-		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/main_asistencia.fxml"));
+		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/maingui.fxml"));
 		fxmlLoader.setControllerFactory(configurableApplicationContext::getBean);
 		parent= fxmlLoader.load();
 	}
+
 	@Override
 	public void start(Stage stage) throws Exception {
 		Screen screen = Screen.getPrimary();
 
 		Rectangle2D bounds = screen.getBounds();
-		stage.setScene(new Scene(parent,bounds.getWidth(), bounds.getHeight()- 80));
+		stage.setScene(new Scene(parent,bounds.getWidth(), bounds.getHeight()-80));
 		stage.setTitle("Spring Java-FX");
 		stage.show();
 	}
+
 }

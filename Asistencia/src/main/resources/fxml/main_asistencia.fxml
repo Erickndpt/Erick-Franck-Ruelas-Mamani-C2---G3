@@ -5,10 +5,10 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pe.edu.upeu.asistencia.control.AsistenciaController">
    <children>
-      <Label layoutX="70.0" layoutY="42.0" prefHeight="17.0" prefWidth="52.0" text="Ejemplo" />
-      <TextField fx:id="txtNum1" layoutX="64.0" layoutY="102.0" />
-      <TextField fx:id="txtNum2" layoutX="272.0" layoutY="102.0" />
-      <Button layoutX="495.0" layoutY="102.0" mnemonicParsing="false" onAction="#sumar" text="Button" />
-      <Label fx:id="txtResult" layoutX="84.0" layoutY="166.0" text="Label" />
+      <Label layoutX="127.0" layoutY="14.0" text="Ejemplo" />
+      <TextField fx:id="txtNum1" layoutX="127.0" layoutY="58.0" />
+      <TextField fx:id="txtNum2" layoutX="300.0" layoutY="58.0" />
+      <Button layoutX="467.0" layoutY="58.0" mnemonicParsing="false" onAction="#sumar" text="Sumar" />
+      <Label fx:id="txtResult" layoutX="127.0" layoutY="109.0" text="Label" />
    </children>
 </AnchorPane>
