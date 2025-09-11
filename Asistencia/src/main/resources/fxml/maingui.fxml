@@ -9,10 +9,10 @@
         <menus>
           <Menu fx:id="menuE" mnemonicParsing="false" text="Eventos">
             <items>
-                <MenuItem fx:id="menuItem1" mnemonicParsing="false" text="Adm.Participante" />
-                <MenuItem fx:id="menuItem3" mnemonicParsing="false" text="Asistencia" />
-                <MenuItem fx:id="menuItem4" mnemonicParsing="false" text="Asistencia 4" />
-                <MenuItem fx:id="menuItem2" mnemonicParsing="false" text="Close" />
+                    <MenuItem fx:id="menuItem1" mnemonicParsing="false" text="Adm. Participante" />
+                    <MenuItem fx:id="menuItem3" mnemonicParsing="false" text="Asistencia" />
+                    <MenuItem fx:id="menuItem4" mnemonicParsing="false" text="Asistencia 4" />
+                    <MenuItem fx:id="menuItem2" mnemonicParsing="false" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">

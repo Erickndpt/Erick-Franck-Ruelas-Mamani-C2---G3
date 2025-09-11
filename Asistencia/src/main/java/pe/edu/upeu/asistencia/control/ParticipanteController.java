@@ -25,34 +25,30 @@ public class ParticipanteController {
 
     @FXML TableView<Participante> tableView;
     ObservableList<Participante> participantes;
-    TableColumn<Participante, String> dniCol, nombreCol, apellidoCol, carreraCol, tipoParCol;
+    TableColumn<Participante, String> dniCol, nombreCol, apellidoCol, carreraCol, tipoPartCol;
     TableColumn<Participante, Void> opcionCol;
-
     @Autowired
     ParticipanteServicioI ps;
-
     @FXML TextField txtDni, txtNombres, txtApellidos;
-
+    int indexE=-1;
     @FXML
-    public void initialize(){
-        cbxCarrera.getItems().addAll(Carrera.values());
-        cbxTipoParticipante.getItems().addAll(TipoParticipante.values());
-
-        definirNombresColumnas(); //Llamamos a la clase  ""definirNombresColumnas"" para que lo marque de azulito
+    public void initialize() {
+        cbxCarrera.getItems().setAll(Carrera.values());
+        cbxTipoParticipante.getItems().setAll(TipoParticipante.values());
+        definirNombresColumnas();
         listarParticipantes();
-
     }
-
-    public void definirNombresColumnas(){ //Para pintar los emcabezados osea para que se puede ingresar texto y de esa forma poner un nombre
+    public void definirNombresColumnas(){
         dniCol = new TableColumn("DNI");
         nombreCol = new TableColumn("Nombre");
         apellidoCol = new TableColumn("Apellido");
         apellidoCol.setMinWidth(180);
         carreraCol = new TableColumn("Carrera");
-        tipoParCol = new TableColumn("Tipo Participante");
-        tipoParCol.setMinWidth(160);
+        tipoPartCol = new TableColumn("Tipo Participante");
+        tipoPartCol.setMinWidth(160);
         opcionCol = new TableColumn("Opciones");
-        tableView.getColumns().addAll(dniCol, nombreCol, apellidoCol, carreraCol, tipoParCol, opcionCol);
+        opcionCol.setMinWidth(200);
+        tableView.getColumns().addAll(dniCol, nombreCol, apellidoCol, carreraCol, tipoPartCol, opcionCol);
     }
 
     public void agregarAccionBotones(){
@@ -61,10 +57,11 @@ public class ParticipanteController {
                 Button btnEditar = new Button("Editar");
                 Button btnEliminar = new Button("Eliminar");
                     {
-                        btnEditar.setOnAction((event)->{
-                            System.out.println("Editando participante");
+                        btnEditar.setOnAction((event) -> {
+                            Participante participante =  getTableView().getItems().get(getIndex());
+                            editarParticipante(participante, getIndex());
                         });
-                        btnEliminar.setOnAction((event)->{
+                        btnEliminar.setOnAction((event) -> {
                             eliminarParticipante(getIndex());
                         });
                     }
@@ -77,13 +74,19 @@ public class ParticipanteController {
                             HBox hBox = new HBox(btnEditar, btnEliminar);
                             hBox.setSpacing(10);
                             setGraphic(hBox);
-
                         }
                 }
                 };
         opcionCol.setCellFactory(cellFactory);
     }
-
+    public void editarParticipante(Participante p, int index){
+        txtDni.setText(p.getDni().getValue());
+        txtNombres.setText(p.getNombre().getValue());
+        txtApellidos.setText(p.getApellidos().getValue());
+        cbxCarrera.getSelectionModel().select(p.getCarrera());
+        cbxTipoParticipante.getSelectionModel().select(p.getTipoParticipante());
+        indexE=index;
+    }
     public void listarParticipantes(){
         dniCol.setCellValueFactory(cellData ->
                 cellData.getValue().getDni());
@@ -93,14 +96,13 @@ public class ParticipanteController {
                 cellData.getValue().getApellidos());
         carreraCol.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCarrera().toString()));
-        tipoParCol.setCellValueFactory(cellData ->
+        tipoPartCol.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getTipoParticipante().toString()));
         agregarAccionBotones();
 
-        participantes = FXCollections.observableArrayList(ps.findAll());
+        participantes=FXCollections.observableArrayList(ps.findAll());
         tableView.setItems(participantes);
     }
-
     @FXML
     public void crearParticipante(){
         Participante participante = new Participante();
@@ -109,13 +111,28 @@ public class ParticipanteController {
         participante.setApellidos(new SimpleStringProperty(txtApellidos.getText()));
         participante.setCarrera(cbxCarrera.getValue());
         participante.setTipoParticipante(cbxTipoParticipante.getValue());
-        ps.save(participante);
+        if(indexE==-1){
+            ps.save(participante);
+        }else{
+            ps.update(participante, indexE);
+            indexE=-1;
+        }
+        limpiarFormulario();
         listarParticipantes();
     }
+
+    public void limpiarFormulario(){
+        txtDni.setText("");
+        txtNombres.setText("");
+        txtApellidos.setText("");
+        cbxCarrera.getSelectionModel().clearSelection();
+        cbxTipoParticipante.getSelectionModel().clearSelection();
+    }
+
+
 
     public void eliminarParticipante(int index){
         ps.delete(index);
         listarParticipantes();
     }
-
 }
