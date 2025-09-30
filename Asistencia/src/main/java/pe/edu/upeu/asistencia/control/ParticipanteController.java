@@ -1,5 +1,6 @@
 package pe.edu.upeu.asistencia.control;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -63,7 +64,7 @@ public class ParticipanteController {
                         });
                         btnEliminar.setOnAction((event) -> {
                             Participante participante =  getTableView().getItems().get(getIndex());
-                            eliminarParticipante(participante.getDni().getValue());
+                            eliminarParticipante(participante.getDni());
                         });
                     }
                 @Override
@@ -81,20 +82,23 @@ public class ParticipanteController {
         opcionCol.setCellFactory(cellFactory);
     }
     public void editarParticipante(Participante p, int index){
-        txtDni.setText(p.getDni().getValue());
-        txtNombres.setText(p.getNombre().getValue());
-        txtApellidos.setText(p.getApellidos().getValue());
+        txtDni.setText(p.getDni());
+        txtNombres.setText(p.getNombre());
+        txtApellidos.setText(p.getApellidos());
         cbxCarrera.getSelectionModel().select(p.getCarrera());
         cbxTipoParticipante.getSelectionModel().select(p.getTipoParticipante());
         indexE=index;
     }
     public void listarParticipantes(){
         dniCol.setCellValueFactory(cellData ->
-                cellData.getValue().getDni());
+                new SimpleObjectProperty<>(cellData.getValue().getDni())
+        );
         nombreCol.setCellValueFactory(cellData ->
-                cellData.getValue().getNombre());
+               new SimpleObjectProperty<>(cellData.getValue().getNombre())
+        );
         apellidoCol.setCellValueFactory(cellData ->
-                cellData.getValue().getApellidos());
+                new SimpleObjectProperty<>(cellData.getValue().getApellidos())
+        );
         carreraCol.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCarrera().toString()));
         tipoPartCol.setCellValueFactory(cellData ->
@@ -107,9 +111,9 @@ public class ParticipanteController {
     @FXML
     public void crearParticipante(){
         Participante participante = new Participante();
-        participante.setDni(new SimpleStringProperty(txtDni.getText()));
-        participante.setNombre(new SimpleStringProperty(txtNombres.getText()));
-        participante.setApellidos(new SimpleStringProperty(txtApellidos.getText()));
+        participante.setDni(txtDni.getText());
+        participante.setNombre(txtNombres.getText());
+        participante.setApellidos(txtApellidos.getText());
         participante.setCarrera(cbxCarrera.getValue());
         participante.setTipoParticipante(cbxTipoParticipante.getValue());
         if(indexE==-1){
