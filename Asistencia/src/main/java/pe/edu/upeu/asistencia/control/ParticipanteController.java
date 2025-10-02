@@ -116,6 +116,7 @@ public class ParticipanteController {
         participante.setApellidos(txtApellidos.getText());
         participante.setCarrera(cbxCarrera.getValue());
         participante.setTipoParticipante(cbxTipoParticipante.getValue());
+        participante.setEstado(true);
         if(indexE==-1){
             ps.save(participante);
         }else{
