@@ -1,0 +1,52 @@
+<div th:fragment="content">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title"
+                th:text="${participante.dni != null ? 'Editar Participante' : 'Nuevo Participante'}">
+            </h3>
+        </div>
+
+        <form th:action="@{/participantes/save}" th:object="${participante}" method="post">
+            <div class="card-body">
+                <div class="form-group">
+                    <label>DNI</label>
+                    <input type="text" th:field="*{dni}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" th:field="*{nombre}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Apellidos</label>
+                    <input type="text" th:field="*{apellidos}" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Carrera</label>
+                    <select th:field="*{carrera}" class="form-control">
+                        <option th:each="c : ${carreras}" th:value="${c.name()}" th:text="${c}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Tipo Participante</label>
+                    <select th:field="*{tipoParticipante}" class="form-control">
+                        <option th:each="t : ${tipos}" th:value="${t.name()}" th:text="${t}"></option>
+                    </select>
+                </div>
+
+                <div class="form-group form-check">
+                    <input type="checkbox" th:field="*{estado}" class="form-check-input">
+                    <label class="form-check-label">Estado</label>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a th:href="@{/participantes}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
