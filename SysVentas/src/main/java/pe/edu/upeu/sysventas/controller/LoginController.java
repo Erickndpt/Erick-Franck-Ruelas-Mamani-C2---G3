@@ -16,7 +16,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import pe.edu.upeu.sysventas.components.StageManager;
 import pe.edu.upeu.sysventas.components.Toast;
@@ -25,9 +24,9 @@ import pe.edu.upeu.sysventas.model.Usuario;
 import pe.edu.upeu.sysventas.service.IUsuarioService;
 
 import java.io.IOException;
+import javafx.scene.input.KeyCode; //  Librería agregada para detectar tecla ENTER
 
 @Controller
-//@Component
 public class LoginController {
 
     @Autowired
@@ -42,6 +41,22 @@ public class LoginController {
     Button btnIngresar;
 
     @FXML
+    public void initialize() {
+        //  Evento ENTER para ejecutar el botón ingresar
+        txtUsuario.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                btnIngresar.fire();
+            }
+        });
+
+        txtClave.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                btnIngresar.fire();
+            }
+        });
+    }
+
+    @FXML
     public void cerrar(ActionEvent event) { //este metodo se encarga de cerrar la ventana del fxml
         Stage stage = (Stage) ((Node)
                 event.getSource()).getScene().getWindow();
@@ -53,18 +68,19 @@ public class LoginController {
     @FXML
     public void login(ActionEvent event) throws IOException {
         try {
-            Usuario usu=us.loginUsuario(txtUsuario.getText(), new String(txtClave.getText()));
-            if (usu!=null) {
+            Usuario usu = us.loginUsuario(txtUsuario.getText(), new String(txtClave.getText()));
+            //Usuario usu = us.loginUsuario(txtUsuario.getText(), encriptarClave(txtClave.getText()));
+            if (usu != null) {
                 SessionManager.getInstance().setUserId(usu.getIdUsuario());
                 SessionManager.getInstance().setUserName(usu.getUser());
-
                 SessionManager.getInstance().setUserPerfil(usu.getIdPerfil().getNombre());
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/maingui.fxml"));
                 loader.setControllerFactory(context::getBean);
                 Parent mainRoot = loader.load();
                 Screen screen = Screen.getPrimary();
                 Rectangle2D bounds = screen.getBounds();
-                Scene mainScene = new Scene(mainRoot,bounds.getWidth(), bounds.getHeight()-30);
+                Scene mainScene = new Scene(mainRoot, bounds.getWidth(), bounds.getHeight() - 30);
                 mainScene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.getIcons().add(new Image(getClass().getResource("/img/store.png").toExternalForm()));
@@ -80,15 +96,31 @@ public class LoginController {
             } else {
                 Stage stage = (Stage) ((Node)
                         event.getSource()).getScene().getWindow();
-                double with=stage.getWidth()*2;
-                double h=stage.getHeight()/2;
-                System.out.println(with + " h:"+h);
+                double with = stage.getWidth() * 2;
+                double h = stage.getHeight() / 2;
+                System.out.println(with + " h:" + h);
                 Toast.showToast(stage, "Credencial invalido!! intente nuevamente", 2000, with, h);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
+    private String encriptarClave(String clave) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("SHA-256");
+            byte[] hash = md.digest(clave.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

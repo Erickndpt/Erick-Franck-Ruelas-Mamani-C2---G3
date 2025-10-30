@@ -11,9 +11,9 @@
         <AnchorPane AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
         <AnchorPane layoutX="14.0" layoutY="70.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
             <children>
-                <ImageView fitHeight="146.0" fitWidth="142.0" layoutX="90.0" layoutY="-39.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="103.0" fitWidth="107.0" layoutX="105.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../img/secrecy-icon.png" />
+                        <Image url="@../img/store.png" />
                     </image>
                 </ImageView>
             </children></AnchorPane>
@@ -82,7 +82,7 @@
                     </children>
                 </GridPane>
             </children></AnchorPane>
-        <Label layoutX="105.0" layoutY="178.0" text="Iniciar Seción" textFill="#3a3a3a">
+        <Label layoutX="105.0" layoutY="198.0" text="Iniciar Seción" textFill="#3a3a3a">
             <font>
                 <Font name="System Bold" size="18.0" />
             </font>
